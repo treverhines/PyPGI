@@ -1,4 +1,5 @@
 {
+"name":"outs",
 "slip_regularization_order":0,
 "slip_collocation":[0.0,0.5,1.0],
 "slip_penalty":0.01,
