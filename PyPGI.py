@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import sys
+sys.path.append('./lib')
+sys.path.append('./input')
 import argparse
-sys.path.append('lib')
-import PyPGI
+import pypgi
 
 p = argparse.ArgumentParser(
       description='Python-based Postseismic Geodetic Inverstion')
-kwargs = dict(p.parse_args())
-PyPGI.main(**kwargs)
+args = p.parse_args()
+pypgi.main()
