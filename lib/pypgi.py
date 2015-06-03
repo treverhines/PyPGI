@@ -59,14 +59,14 @@ def state_parser(Ns,Ds,Nv,Nx,Dx):
 
 
 def flat_data(u):
-  '''                                                                                                   
+  '''                            
   takes a Nx by Dx array of data and flattens it to one dimension   
   '''
   return np.reshape(u,(np.prod(np.shape(u)),))
 
 
 def flat_covariance(C):
-  '''                                                                                                   
+  '''               
   takes a Nx by Dx by Dx covariance array and flattens it to two  
   dimension             
   '''
@@ -227,12 +227,19 @@ def kalmanfilter(data,prior,gf,reg,param):
 
     logger.info('finished Kalman filter iteration %s of %s' % (i+1,Nt))
 
-  logger.info('starting RTS smoothing')
+  logger.info('smoothing with RTS method')
   kalman.smooth()
 
   state_mean = kalman.get('smooth')
   state_covariance = kalman.get('smooth_covariance')
   state_std = [np.sqrt(np.diag(i)) for i in state_covariance]
+
+  logger.info('computing predicted data')
+  # compute predicted data
+  pred = np.zeros((Nt,p['Nx'],p['Dx']))
+  for i in range(Nt):
+    pred[i,:,:] = observation(state_mean[i],t[i],F,G,p,flatten=False)
+
 
   slip_int = {'mean':np.array([i[p['slip_integral']] for i in state_mean]),   
               'uncertainty':np.array([i[p['slip_integral']] for i in state_std])}
@@ -252,12 +259,15 @@ def kalmanfilter(data,prior,gf,reg,param):
   base = {'mean':state_mean[-1][p['baseline_displacement']],   
           'uncertainty':state_std[-1][p['baseline_displacement']]}
 
-  out = {'slip_integral':slip_int,
-         'slip':slip,
-         'slip_derivative':slip_dif,
-         'visc':visc,
-         'secular_velocity':vel,
-         'baseline_displacement':base}
+  state_soln = {'slip_integral':slip_int,
+                'slip':slip,
+                'slip_derivative':slip_dif,
+                'visc':visc,
+                'secular_velocity':vel,
+                'baseline_displacement':base}
+
+  out = {'state':state_soln,
+         'predicted':pred}
 
   return out
 

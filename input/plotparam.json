@@ -1,0 +1,15 @@
+{
+"name":"out-12",
+"quiver_scale":0.05,
+"scale_length":0.1,
+"fluidity_anchor":[[0.0,0.0,0.0]],
+"fluidity_length":[50.0],
+"fluidity_width":[50.0],
+"fluidity_strike":[90.0],
+"fluidity_dip":[89.5],
+"slip_anchor":[[0.0,0.0,0.0]],
+"slip_length":[10.0],
+"slip_width":[10.0],
+"slip_strike":[0.0],
+"slip_dip":[45.0]
+}
